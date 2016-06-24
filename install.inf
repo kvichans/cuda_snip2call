@@ -1,0 +1,18 @@
+[info]
+title=SnipToCall
+desc=Supports snippets to call any commands (use ConfigKeymap to confirure)
+type=cudatext-plugin
+subdir=cuda_snip2call
+homepage=https://github.com/kvichans/cuda_snip_to_call
+
+[item1]
+section=events
+events=on_key
+keys=9
+
+[item10]
+section=commands
+caption=Configure SnipToCall...
+method=dlg
+;menu=0
+
