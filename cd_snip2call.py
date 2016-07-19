@@ -2,7 +2,7 @@
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '0.7.0 2016-06-24'
+    '0.7.1 2016-07-19'
 ToDo: (see end of file)
 '''
 
@@ -194,13 +194,13 @@ class Command:
                       ,    [ (cnm,                ', '.join(sns)) 
                             for  (cid, cnm, sns) in fcins_l ])
             cnts    =[dict(cid='fltr',tp='bt'  ,tid='scnd'  ,l=5+520+5  ,w=110  ,cap=_('&Filter')       ,props='1'          ) # &f  default
-                     ,dict(cid='drop',tp='bt'  ,t=5+45      ,l=5+520+5  ,w=110  ,cap=_('&All')                              ) # &a
-                     ,dict(cid='orcn',tp='ch'  ,t=5         ,l=5+310    ,w=40   ,cap=_('&OR')           ,act='1'            ) # &o
+                     ,dict(cid='drop',tp='bt'  ,t=5+50      ,l=5+520+5  ,w=110  ,cap=_('&All')                              ) # &a
+                     ,dict(cid='orcn',tp='ch'  ,t=5         ,l=5+300    ,w=40   ,cap=_('&OR')           ,act='1'            ) # &o
                      ,dict(           tp='lb'  ,tid='orcn'  ,l=5+5      ,w=90   ,cap=_('In &Command:')          ,hint=ccnd_h) # &c
                      ,dict(cid='ccnd',tp='ed'  ,t=5+20      ,l=5+5      ,w=150                                              ) #
                      ,dict(           tp='lb'  ,tid='orcn'  ,l=5+350+5  ,w=50   ,cap=_('In &Snip(s):')          ,hint=scnd_h) # &s
                      ,dict(cid='scnd',tp='ed'  ,t=5+20      ,l=5+350+5  ,w=100                                              ) #
-                     ,dict(cid='lwcs',tp='lvw' ,t=5+40+5    ,l=5        ,w=520,h=540  ,items=itms       ,props='1'          ) #     grid
+                     ,dict(cid='lwcs',tp='lvw' ,t=5+50      ,l=5        ,w=520,h=535  ,items=itms       ,props='1'          ) #     grid
                      ,dict(cid='asnp',tp='bt'  ,t=200       ,l=5+520+5  ,w=110  ,cap=_('A&dd Snip')                         ) # &d
                      ,dict(cid='rsnp',tp='bt'  ,t=200+30    ,l=5+520+5  ,w=110  ,cap=_('F&ree Snip(s)')                     ) # &r
                      ,dict(cid='help',tp='bt'  ,t=600-65    ,l=5+520+5  ,w=110  ,cap=_('Hel&p')                             ) # &p 
@@ -215,7 +215,7 @@ class Command:
                                 ,orcn=orcn
                                 ,lwcs=lwcs_n)
             pass;                  #LOG and log('in-vals={}',(vals))
-            btn, vals, chds = dlg_wrapper(_('Config SnipToCall'), 650-5, 600, cnts, vals, focus_cid=focused)
+            btn, vals, chds = dlg_wrapper(_('Configure "SnipToCall"'), 650-5, 600, cnts, vals, focus_cid=focused)
             pass;                  #LOG and log('an-vals={}',(vals))
             pass;                  #LOG and log('chds={}',(chds))
             if btn is None or btn=='-':    return#while True

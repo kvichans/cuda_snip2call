@@ -1,4 +1,4 @@
-﻿Plugin for CudaText.
+Plugin for CudaText.
 Gives the new way for calling commands (internal in CudaText, and external from plugins, e.g. ExtTools or Macros).
 
 Adds one item to Plugins menu: "Configure SnipToCall".
