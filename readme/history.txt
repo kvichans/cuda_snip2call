@@ -1,5 +1,6 @@
 0.7.1 (2016-07-19)
 changed: layout for Mac
+changed: раскладка для Mac
 
 0.7.0 (2016-06-24)
 init
