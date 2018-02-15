@@ -1,8 +1,8 @@
-﻿''' Plugin for CudaText editor
+''' Plugin for CudaText editor
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '0.7.1 2016-07-19'
+    '0.7.2 2018-02-08'
 ToDo: (see end of file)
 '''
 
@@ -19,7 +19,7 @@ OrdDict = collections.OrderedDict
 # I18N
 _       = get_translation(__file__)
 
-pass;                           LOG     = (-1==-1)  # Do or dont logging.
+pass;                           LOG     = (-1== 1)  # Do or dont logging.
 
 co_sgns     = [sgn                      for sgn in dir(cmds) if sgn.startswith('cCommand_') 
                                                              or sgn.startswith('cmd_')]
@@ -39,6 +39,26 @@ class SnipData:
 
 #   msg_correct_snip    = _('Permitted character in snip: letters')
     msg_correct_snip    = _('Snip characters: letters, digits, "_". First character must be letter.')
+    snip_help           = _('''
+"Snip" is an alternative way to call commands.
+    
+• Simple case:
+    "pu" is snip for command PageUp.
+    Type in any text
+        /pu
+    and press Tab-key.
+    Fragment "/pu" will be removed from text and undo-history, 
+    command PageUp will be called.
+• More complex case:
+    Type
+        /3pu
+    and command will be called 3 times.
+    
+Snip contains only letters, digits, "_", and starts with a letter.
+        
+Any command can have many snips assigned to it.
+It's a good idea to assign keystrokes, for all available keyboard layouts, to the same command.
+                        ''').strip()
     @staticmethod
     def is_snip(text):
         return  text.isidentifier() and text[0].isalpha()
@@ -107,34 +127,43 @@ class SnipData:
     @staticmethod
     def _load_CID2NMS():
         cid2nms = OrdDict()
-        # Core cmds
-        for n in itertools.count():
-            if not    app.app_proc(app.PROC_GET_COMMAND, str(n)): break#for n
-            cid,cnm,\
-            ck1,ck2 = app.app_proc(app.PROC_GET_COMMAND, str(n))
-            if cid<=0:                      continue#for n
-            if cnm.endswith(r'\-'):         continue#for n      # command for separator in menu
-            if cnm.startswith('lexer:'):    continue#for n      # ?? lexer? smth-more?
-            if cnm.startswith('plugin:'):   continue#for n      # ?? plugin? smth-more?
-            cid2nms[cid]    = cnm
-           #for n
-#       pass;                   LOG and log('|cid2nms|={}',len(cid2nms))
-#       pass;                   LOG and log('|CO_CID2SGN|={}',len(CO_CID2SGN))
-#       pass;                   LOG and log('diff={}',({cid for cid in cid2nms}-{cid for cid in CO_CID2SGN}))
-#       pass;                   LOG and log('diff={}',({cid for cid in CO_CID2SGN}-{cid for cid in cid2nms}))
-#       pass;                   LOG and log('diff={}',({cid:sgn  for cid,sgn in CO_CID2SGN.items() if cid not in cid2nms}))
-#       assert {cid for cid in cid2nms}=={cid for cid in CO_CID2SGN}    
-        for n in itertools.count():
-            if not    app.app_proc(app.PROC_GET_COMMAND_PLUGIN, str(n)): break#for n
-            pnm,    \
-            modul,  \
-            meth,   \
-            par,    \
-            lxrs    = app.app_proc(app.PROC_GET_COMMAND_PLUGIN, str(n))
-            if pnm.endswith(r'\-'):         continue#for n      # command for separator in menu
-            pid     = modul+','+meth+(','+par if par else '')
-            cid2nms[pid]    = 'plugin: '+pnm.replace('&', '').replace('\\', ': ')
-           #for n
+        if True: #app.app_api_version()>='1.0.212':
+            lcmds   = app.app_proc(app.PROC_GET_COMMANDS, '')
+            for cmd in lcmds:
+                if cmd['type'] not in ('cmd', 'plugin'): continue
+                cid2nms[cmd['cmd'] 
+                            if cmd['type']=='cmd' else 
+                        f('{},{},{}', cmd['p_module'], cmd['p_method'], cmd['p_method_params']).rstrip(',')
+                       ]    = cmd['name']
+#       else: # old version
+#           # Core cmds
+#           for n in itertools.count():
+#               if not    app.app_proc(app.PROC_GET_COMMAND, str(n)): break#for n
+#               cid,cnm,\
+#               ck1,ck2 = app.app_proc(app.PROC_GET_COMMAND, str(n))
+#               if cid<=0:                      continue#for n
+#               if cnm.endswith(r'\-'):         continue#for n      # command for separator in menu
+#               if cnm.startswith('lexer:'):    continue#for n      # ?? lexer? smth-more?
+#               if cnm.startswith('plugin:'):   continue#for n      # ?? plugin? smth-more?
+#               cid2nms[cid]    = cnm
+#              #for n
+#           pass;               #LOG and log('|cid2nms|={}',len(cid2nms))
+#           pass;               #LOG and log('|CO_CID2SGN|={}',len(CO_CID2SGN))
+#           pass;               #LOG and log('diff={}',({cid for cid in cid2nms}-{cid for cid in CO_CID2SGN}))
+#           pass;               #LOG and log('diff={}',({cid for cid in CO_CID2SGN}-{cid for cid in cid2nms}))
+#           pass;               #LOG and log('diff={}',({cid:sgn  for cid,sgn in CO_CID2SGN.items() if cid not in cid2nms}))
+#           pass;               #assert {cid for cid in cid2nms}=={cid for cid in CO_CID2SGN}    
+#           for n in itertools.count():
+#               if not    app.app_proc(app.PROC_GET_COMMAND_PLUGIN, str(n)): break#for n
+#               pnm,    \
+#               modul,  \
+#               meth,   \
+#               par,    \
+#               lxrs    = app.app_proc(app.PROC_GET_COMMAND_PLUGIN, str(n))
+#               if pnm.endswith(r'\-'):         continue#for n      # command for separator in menu
+#               pid     = modul+','+meth+(','+par if par else '')
+#               cid2nms[pid]    = 'plugin: '+pnm.replace('&', '').replace('\\', ': ')
+#              #for n
         return cid2nms
        #def _load_CID2NMS
 
@@ -147,6 +176,8 @@ class Command:
         pass;                  #LOG and log('ok',())
     
     def dlg(self):
+        if app.app_api_version()<'1.0.212':     # depr PROC_GET_COMMAND, PROC_GET_COMMAND_PLUGIN
+            return app.msg_status(_('Need update CudaText'))
         sndt    = self.sndt
         reND    = re.compile(r'\W')
         def is_cond4name(cond, text):
@@ -199,6 +230,7 @@ class Command:
                      ,dict(           tp='lb'  ,tid='orcn'  ,l=5+5      ,w=90   ,cap=_('In &Command:')          ,hint=ccnd_h) # &c
                      ,dict(cid='ccnd',tp='ed'  ,t=5+20      ,l=5+5      ,w=150                                              ) #
                      ,dict(           tp='lb'  ,tid='orcn'  ,l=5+350+5  ,w=50   ,cap=_('In &Snip(s):')          ,hint=scnd_h) # &s
+                     ,dict(cid='shlp',tp='bt'  ,tid='orcn'  ,l=5+350+5+80,w=20   ,cap=_('&?')                                ) # &?
                      ,dict(cid='scnd',tp='ed'  ,t=5+20      ,l=5+350+5  ,w=100                                              ) #
                      ,dict(cid='lwcs',tp='lvw' ,t=5+50      ,l=5        ,w=520,h=535  ,items=itms       ,props='1'          ) #     grid
                      ,dict(cid='asnp',tp='bt'  ,t=200       ,l=5+520+5  ,w=110  ,cap=_('A&dd Snip')                         ) # &d
@@ -233,6 +265,8 @@ class Command:
                 scnd    = ''
                 focused = 'ccnd'
 
+            elif btn=='shlp':
+                app.msg_box(sndt.snip_help, app.MB_OK)
             elif btn=='help':
                 dlg_wrapper(_('Help for "Config SnipToCall"'), 410, 310,
                      [dict(cid='htxt',tp='me'    ,t=5  ,h=300-28,l=5          ,w=400  ,props='1,0,1'  ) #  ro,mono,border
@@ -279,8 +313,12 @@ class Command:
        #def dlg
     
     def on_key(self, ed_self, code, state):
+        if app.app_api_version()<'1.0.212':     # depr PROC_GET_COMMAND, PROC_GET_COMMAND_PLUGIN
+            return app.msg_status(_('Need update CudaText'))
+        pass;                  #LOG and log('code, state={}',(code, state))
         if code!=9:                     return True # tab-key=9
         if state:                       return True # SCAM
+        pass;                   LOG and log('self.sndt.snp2csgn={}',(self.sndt.snp2csgn))
         if not self.sndt.snp2csgn:      return True # no snips
         if ed_self.get_prop(app.PROP_TAB_COLLECT_MARKERS): return # TAB busy
         
@@ -292,7 +330,8 @@ class Command:
 
         line    = ed_self.get_text_line(rCrt)
         posC    = line.rfind(SnipData.STARTC, 0, cCrt)
-        pass;                  #LOG and log('line, posC={}',(line, posC))
+        pass;                   LOG and log('SnipData.STARTC={}',(SnipData.STARTC))
+        pass;                   LOG and log('line, posC={}',(line, posC))
         if -1==posC or posC+1==cCrt:    return True # no sign or too near
         rp_snp_pr = line[posC+1:cCrt]
         rpt,snp,prm = SnipData.parse_snip_env(rp_snp_pr)
@@ -304,7 +343,7 @@ class Command:
 #       if -1!=posP:
 #           snp = line[:posP]
 #           prm = line[posP+1:]
-        pass;                  #LOG and log('rpt,snp,prm={}',(rpt,snp,prm))
+        pass;                   LOG and log('rpt,snp,prm={}',(rpt,snp,prm))
 
         cid     = self.sndt.get_cmdid(snp)
         if not cid:                     return True # no such snip
