@@ -1,3 +1,7 @@
+
+0.7.3 (2021-01-09)
+fixed: not expanded macros in some files: "* /ins" didn't work
+
 0.7.2 (2018-02-08)
 fixed: skip deprecated API
 
