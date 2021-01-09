@@ -293,20 +293,21 @@ class Command:
                 
             elif btn=='asnp' and cmd_id:
                 cnm     = sndt.get_name(cmd_id)
-                new_sn  = app.dlg_input(f(_('Add snip for "{}"'), cnm), '') 
+                capt    = _('Snippet for "{}" without leading "/"')
+                new_sn  = app.dlg_input(f(capt, cnm), '') 
                 if not new_sn:  continue#while
                 while not SnipData.is_snip(new_sn):
                     app.msg_status(SnipData.msg_correct_snip)
-                    new_sn  = app.dlg_input(f(_('Snip for "{}"'), cnm), new_sn) 
+                    new_sn  = app.dlg_input(f(capt, cnm), new_sn) 
                     if not new_sn:  break
                 if not new_sn:  continue#while
                 pre_cid = sndt.get_cmdid(new_sn)
                 if pre_cid:
                     pre_cnm = sndt.get_name(pre_cid)
-                    if app.msg_box(f(_('Snip "{}" is already assigned '
+                    if app.msg_box(f(_('Snippet "{}" is already assigned'
                                        '\nto command "{}".'
                                        '\n'
-                                       '\nDo you want to reassign the snip '
+                                       '\nDo you want to reassign the snippet'
                                        '\nto command "{}"?')
                                     , new_sn, pre_cnm, cnm), app.MB_OKCANCEL)==app.ID_CANCEL: continue#while
                 sndt.set(new_sn, cmd_id)
