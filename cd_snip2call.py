@@ -1,8 +1,9 @@
 ''' Plugin for CudaText editor
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
+    Alexey (CudaText)
 Version:
-    '0.7.2 2018-02-08'
+    '0.7.3 2021-01-09'
 ToDo: (see end of file)
 '''
 
@@ -350,10 +351,16 @@ class Command:
         pass;                  #LOG and log('cid={}',(cid))
 
         # Eliminate snp from text
-        if not 'Simple way - cut':
-            ed_self.delete(   cCrt-len(rp_snp_pr)-1, rCrt, cCrt, rCrt)
-            ed_self.set_caret(cCrt-len(rp_snp_pr)-1, rCrt)
-        if 'Complex way - undo':
+        if 'Simple way - cut':
+            x = cCrt-len(rp_snp_pr)-1
+            ed_self.delete(x, rCrt, cCrt, rCrt)
+            ed_self.set_caret(x, rCrt)
+        
+        # Alexey: not sure that count of Undo simple actions (when not grouped Undo)
+        # equals to count of Redo simple actions. to return to the same text.
+        # this is because Undo list contains also mouse clicks and some 'internal markers'.
+        # so below block is not 100% safe.
+        if not 'Complex way - undo':
             line_snp= line
             line_pre= line_snp
             line_pur= line_snp[:cCrt-len(rp_snp_pr)-1] + line_snp[cCrt:]
