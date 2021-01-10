@@ -7,7 +7,7 @@ homepage=https://github.com/kvichans/cuda_snip_to_call
 
 [item1]
 section=events
-events=on_key
+events=on_key+++
 keys=9
 
 [item10]

@@ -1,3 +1,8 @@
+
+0.7.3 (2021-01-09)
+fixed: not expanded macros in some files: "* /ins" didn't work
+fixed: made priority of plugin higher to work before other plugins
+
 0.7.2 (2018-02-08)
 fixed: skip deprecated API
 
