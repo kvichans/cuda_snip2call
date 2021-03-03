@@ -1,8 +1,8 @@
-﻿''' Lib for Plugin
+''' Lib for Plugin
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '1.0.2 2016-03-22'
+    '1.0.3 2021-03-03'
 Content
     log                 Logger with timing
     get_translation     i18n
@@ -205,19 +205,28 @@ def get_translation(plug_file):
            It allows to translate all "strings"
            It creates (cmd "Save")
             <module>\lang\ru_RU\LC_MESSAGES\<module>.mo
-        4. get_translation uses the file to realize
+        4. <module>.mo can be placed also in dir
+            CudaText\data\langpy\ru_RU\LC_MESSAGES\<module>.mo
+           The dir is used first.
+        5. get_translation uses the file to realize
             _('')
     '''
-    plug_dir= os.path.dirname(plug_file)
-    plug_mod= os.path.basename(plug_dir)
-    lng     = app.app_proc(app.PROC_GET_LANG, '')
-    lng_mo  = plug_dir+'/lang/{}/LC_MESSAGES/{}.mo'.format(lng, plug_mod)
-    if os.path.isfile(lng_mo):
-        t   = gettext.translation(plug_mod, plug_dir+'/lang', languages=[lng])
-        _   = t.gettext
-        t.install()
-    else:
-        _   =  lambda x: x
+    lng      = app.app_proc(app.PROC_GET_LANG, '')
+    plug_dir = os.path.dirname(plug_file)
+    plug_mod = os.path.basename(plug_dir)
+    lng_dirs = [
+                 app.app_path(app.APP_DIR_DATA)  + os.sep + 'langpy',
+                 plug_dir                        + os.sep + 'lang',
+               ]
+    _        =  lambda x: x
+    pass;                      #return _
+    for lng_dir in lng_dirs:
+        lng_mo = lng_dir+'/{}/LC_MESSAGES/{}.mo'.format(lng, plug_mod)
+        if os.path.isfile(lng_mo):
+            t = gettext.translation(plug_mod, lng_dir, languages = [lng])
+            _ = t.gettext
+            t.install()
+            break
     return _
 
 def get_desktop_environment():
