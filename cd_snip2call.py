@@ -3,7 +3,7 @@ Authors:
     Andrey Kvichansky    (kvichans on github.com)
     Alexey (CudaText)
 Version:
-    '0.7.3 2021-01-09'
+    '0.7.4 2021-03-03'
 ToDo: (see end of file)
 '''
 
@@ -227,7 +227,7 @@ class Command:
                             for  (cid, cnm, sns) in fcins_l ])
             cnts    =[dict(cid='fltr',tp='bt'  ,tid='scnd'  ,l=5+520+5  ,w=110  ,cap=_('&Filter')       ,props='1'          ) # &f  default
                      ,dict(cid='drop',tp='bt'  ,t=5+50      ,l=5+520+5  ,w=110  ,cap=_('&All')                              ) # &a
-                     ,dict(cid='orcn',tp='ch'  ,t=5         ,l=5+300    ,w=40   ,cap=_('&OR')           ,act='1'            ) # &o
+                     ,dict(cid='orcn',tp='ch'  ,t=5         ,l=5+290    ,w=40   ,cap=_('&OR')           ,act='1'            ) # &o
                      ,dict(           tp='lb'  ,tid='orcn'  ,l=5+5      ,w=90   ,cap=_('In &Command:')          ,hint=ccnd_h) # &c
                      ,dict(cid='ccnd',tp='ed'  ,t=5+20      ,l=5+5      ,w=150                                              ) #
                      ,dict(           tp='lb'  ,tid='orcn'  ,l=5+350+5  ,w=50   ,cap=_('In &Snip(s):')          ,hint=scnd_h) # &s
