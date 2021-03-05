@@ -1,3 +1,5 @@
+1.0.3 2021-03-03
+fixed: i18n
 
 0.7.3 (2021-01-09)
 fixed: not expanded macros in some files: "* /ins" didn't work
