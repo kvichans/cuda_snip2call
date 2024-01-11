@@ -3,7 +3,7 @@ title=SnipToCall
 desc=Allows to use snippet-strings to call any commands (internal or plugins). Can be configured also from "Configure Hotkeys" plugin.
 type=cudatext-plugin
 subdir=cuda_snip2call
-homepage=https://github.com/kvichans/cuda_snip_to_call
+homepage=https://github.com/kvichans/cuda_snip2call
 
 [item1]
 section=events
