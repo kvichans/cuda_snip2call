@@ -1,6 +1,5 @@
 2024.01.11
 - fix: name 'subprocess' is not defined
-- fix: "cuda_snip2call" changed to "cuda_snip_to_call" in .inf file
 
 1.0.3 2021-03-03
 fixed: i18n
