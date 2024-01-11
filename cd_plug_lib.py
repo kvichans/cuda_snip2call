@@ -274,6 +274,7 @@ def get_desktop_environment():
 def is_running(process):
     #From http://www.bloggerpolis.com/2011/05/how-to-check-if-a-process-is-running-using-python/
     # and http://richarddingwall.name/2009/06/18/windows-equivalents-of-ps-and-kill-commands/
+    import subprocess, re
     try: #Linux/Unix
         s = subprocess.Popen(["ps", "axw"],stdout=subprocess.PIPE)
     except: #Windows
