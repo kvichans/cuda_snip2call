@@ -1,8 +1,8 @@
-''' Lib for Plugin
+﻿''' Lib for Plugin
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '1.0.3 2021-03-03'
+    '1.0.5 2024-01-13'
 Content
     log                 Logger with timing
     get_translation     i18n
@@ -197,7 +197,7 @@ def get_translation(plug_file):
         2. These string are extracted from code to 
             lang/messages.pot
            with run
-            python.exe <pypython-root>\Tools\i18n\pygettext.py -p lang <plugin>.py
+            python.exe <python-root>\Tools\i18n\pygettext.py -p lang <plugin>.py
         3. Poedit (or same program) create 
             <module>\lang\ru_RU\LC_MESSAGES\<module>.po
            from (cmd "Update from POT") 
@@ -205,29 +205,30 @@ def get_translation(plug_file):
            It allows to translate all "strings"
            It creates (cmd "Save")
             <module>\lang\ru_RU\LC_MESSAGES\<module>.mo
-        4. <module>.mo can be placed also in dir
+        4. <module>.mo can be placed also in dir 
             CudaText\data\langpy\ru_RU\LC_MESSAGES\<module>.mo
            The dir is used first.
         5. get_translation uses the file to realize
             _('')
     '''
-    lng      = app.app_proc(app.PROC_GET_LANG, '')
-    plug_dir = os.path.dirname(plug_file)
-    plug_mod = os.path.basename(plug_dir)
-    lng_dirs = [
-                 app.app_path(app.APP_DIR_DATA)  + os.sep + 'langpy',
-                 plug_dir                        + os.sep + 'lang',
-               ]
-    _        =  lambda x: x
+    lng     = app.app_proc(app.PROC_GET_LANG, '')
+    plug_dir= os.path.dirname(plug_file)
+    plug_mod= os.path.basename(plug_dir)
+    lng_dirs= [ 
+                app.app_path(app.APP_DIR_DATA)  +os.sep+'langpy',
+                plug_dir                        +os.sep+'lang', 
+              ]
+    _       =  lambda x: x
     pass;                      #return _
     for lng_dir in lng_dirs:
-        lng_mo = lng_dir+'/{}/LC_MESSAGES/{}.mo'.format(lng, plug_mod)
+        lng_mo  = lng_dir+'/{}/LC_MESSAGES/{}.mo'.format(lng, plug_mod)
         if os.path.isfile(lng_mo):
-            t = gettext.translation(plug_mod, lng_dir, languages = [lng])
-            _ = t.gettext
+            t   = gettext.translation(plug_mod, lng_dir, languages=[lng])
+            _   = t.gettext
             t.install()
             break
     return _
+   #def get_translation
 
 def get_desktop_environment():
     #From http://stackoverflow.com/questions/2035657/what-is-my-current-desktop-environment
@@ -300,9 +301,9 @@ ENV2FITS= {'win':
             ,'button'     :-4
             ,'combo_ro'   :-5
             ,'combo'      :-6
-            ,'checkbutton':-3
+            ,'checkbutton':-4
             ,'linklabel'  : 0
-            ,'spinedit'   :-5
+            ,'spinedit'   :-6
             }
           ,'mac':
             {'check'      :-1
@@ -503,7 +504,7 @@ def dlg_wrapper(title, w, h, cnts, in_vals={}, focus_cid=None):
         ctrls_l+= [chr(1).join(lst)]
        #for cnt
     pass;                      #log('ok ctrls_l={}',pformat(ctrls_l, width=120))
-    
+
     ans     = app.dlg_custom(title, w, h, '\n'.join(ctrls_l), cid2i.get(focus_cid, -1))
     if ans is None: return None, None, None   # btn_cid, {cid:v}, [cid]
 
@@ -560,7 +561,7 @@ def get_hotkeys_desc(cmd_id, ext_id=None, keys_js=None, def_ans=''):
     """
     if keys_js is None:
         keys_json   = app.app_path(app.APP_DIR_SETTINGS)+os.sep+'keys.json'
-        keys_js     = apx._json_loads(open(keys_json).read()) if os.path.exists(keys_json) else {}
+        keys_js     = apx._json_loads(open(keys_json, encoding='utf8').read()) if os.path.exists(keys_json) else {}
 
     cmd_id  = f('{},{}', cmd_id, ext_id) if ext_id else cmd_id
     if cmd_id not in keys_js:
