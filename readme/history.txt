@@ -1,5 +1,6 @@
-2024.01.11
-- fix: name 'subprocess' is not defined
+2024.01.13
+- fix: possible crash on CJK locale
+- fix: 'subprocess' was not imported
 
 1.0.3 2021-03-03
 fixed: i18n
