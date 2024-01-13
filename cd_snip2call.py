@@ -1,9 +1,9 @@
 ''' Plugin for CudaText editor
 Authors:
-    Andrey Kvichansky    (kvichans on github.com)
-    Alexey (CudaText)
+    Andrey Kvichansky (kvichans on github.com)
+    Alexey Torgashin (CudaText)
 Version:
-    '0.7.4 2021-03-03'
+    '0.7.5 2024-01-12'
 ToDo: (see end of file)
 '''
 
@@ -88,7 +88,7 @@ It's a good idea to assign keystrokes, for all available keyboard layouts, to th
     
     def __init__(self):
         pass;                  #LOG and log('ok',())
-        self.snip_js    = json.loads(open(    snip2call_json).read()) \
+        self.snip_js    = json.loads(open(snip2call_json, encoding='utf8').read()) \
                             if os.path.exists(snip2call_json) else \
                           {}
         self.snp2csgn   = self.snip_js.setdefault('snip2cid', {})
@@ -105,13 +105,13 @@ It's a good idea to assign keystrokes, for all available keyboard layouts, to th
     
     def free(self, snp):
         self.snp2csgn.pop(snp, None)
-        open(snip2call_json, 'w').write(json.dumps(self.snip_js, indent=4))
+        open(snip2call_json, 'w', encoding='utf8').write(json.dumps(self.snip_js, indent=4))
         self._prepare()
         
     def set(self, snp, cid):
         # Assign snip to cmd-id. Old snip-assigning will be removed
         self.snp2csgn[snp] = CO_CID2SGN.get(cid, cid)
-        open(snip2call_json, 'w').write(json.dumps(self.snip_js, indent=4))
+        open(snip2call_json, 'w', encoding='utf8').write(json.dumps(self.snip_js, indent=4))
         self._prepare()
     
     def cmd_ids(self):
